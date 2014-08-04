@@ -1,0 +1,26 @@
+
+//App
+
+//TODO NOW:
+- add take a photo floating button with action bar
+- setup a small server to take in photos
+- upload photo to it with tape
+        -> maybe use imagur uploader
+
+- display that photo in a list
+
+- TODO: stay alert on any opportunity to use RxJava
+
+
+//Db credentials :
+- username findforme_user, passwd : findforme_user_db
+
+//mongodb of server :   mongodb://<dbuser>:<dbpassword>@ds061189.mongolab.com:61189/findforme_backend_db
+
+
+//AWS S3 credentials :
+- Access key : AKIAJQBOM4BZEH2VQ56A
+- Access secret : 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
+
+heroku config:set AWS_ACCESS_KEY_ID=AKIAJQBOM4BZEH2VQ56A AWS_SECRET_ACCESS_KEY=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
+heroku config:set S3_BUCKET_NAME=findforme-backend-storage

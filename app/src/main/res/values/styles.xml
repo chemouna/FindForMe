@@ -1,0 +1,28 @@
+<resources>
+
+    <style name="FrameworkRoot.Theme" parent="android:Theme.Holo.Light.DarkActionBar" />
+    <style name="FrameworkRoot.Widget.ActionButton.Overflow" parent="android:Widget.Holo.ActionButton.Overflow" />
+    <style name="FrameworkRoot.Widget" parent="android:Theme.Holo" />
+
+    <style name="Theme" parent="FrameworkRoot.Theme">
+        <item name="android:actionOverflowButtonStyle">@style/ActionButton.Overflow</item>
+        <item name="android:actionBarWidgetTheme">@style/Theme.FindForMeTheme.Widget</item>
+    </style>
+
+    <style name="Theme.FindForMeTheme.Base" parent="Theme">
+
+    </style>
+
+    <style name="Theme.FindForMeTheme" parent="Theme.FindForMeTheme.Base">
+
+    </style>
+
+    <style name="ActionButton.Overflow" parent="FrameworkRoot.Widget.ActionButton.Overflow">
+        <item name="android:src">@drawable/ic_action_overflow</item>
+    </style>
+
+    <style name="Theme.FindForMeTheme.Widget" parent="FrameworkRoot.Widget">
+
+    </style>
+
+</resources>

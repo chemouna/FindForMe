@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mona.android.findforme.ui.widget.TakePhotoFabFrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:findforme="http://schemas.android.com/apk/res-auto"
+    android:layout_width="@dimen/take_photo_fab_height"
+    android:layout_height="@dimen/take_photo_fab_height"
+    android:elevation="@dimen/fab_elevation"
+    android:background="@color/theme_primary"
+    android:contentDescription="@string/take_photo">
+    <!-- android:stateListAnimator="@anim/">-->
+
+    <ImageView
+        android:id="@+id/iv_take_photo"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="center"
+        android:src="@drawable/ic_camera_white"
+        android:layout_gravity="center"/>
+
+</mona.android.findforme.ui.widget.TakePhotoFabFrameLayout>

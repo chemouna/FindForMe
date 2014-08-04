@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fl_take_photo"
+    android:layout_width="@dimen/take_photo_fab_height"
+    android:layout_height="@dimen/take_photo_fab_height"
+    android:clickable="true"
+    android:focusable="true"
+    android:contentDescription="@string/take_photo"
+    android:background="@color/theme_primary">
+    <!-- android:layout_marginLeft="@dimen/keyline_1_minus_8dp"
+        android:background="@drawable/add_schedule_fab_background"-->
+
+    <ImageView android:id="@+id/iv_take_photo"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="center"
+        android:src="@drawable/ic_camera_white"
+        android:contentDescription="@null"
+        android:layout_gravity="center" />
+
+</FrameLayout>
