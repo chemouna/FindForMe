@@ -46,12 +46,12 @@ public class FindForMeApplication extends Application {
         }
 
         @Provides @Singleton
-        private PhotoUploadTaskQueue provideTaskQueue(Gson gson, Bus bus){
+        PhotoUploadTaskQueue provideTaskQueue(Gson gson, Bus bus){
             return PhotoUploadTaskQueue.create(appContext, gson, bus);
         }
 
         @Provides @Singleton
-        private Bus provideBus(){
+        Bus provideBus(){
             return new Bus();
         }
 

@@ -9,20 +9,21 @@ import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
+import com.google.common.eventbus.Subscribe;
 import com.squareup.otto.Bus;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import mona.android.findforme.events.PhotoUploadSuccessEvent;
 import mona.android.findforme.tasks.PhotoUploadTask;
 import mona.android.findforme.tasks.PhotoUploadTaskQueue;
 
@@ -30,10 +31,10 @@ public class FindForMeActivity extends Activity {
 
     private static final int REQUEST_IMAGE_CAPTURE = 1;
 
-    @InjectView(R.id.fl_take_photo) private FrameLayout mFlTakePhoto;
+    @InjectView(R.id.fl_take_photo) FrameLayout mFlTakePhoto;
 
-    @Inject private Bus mBus;
-    @Inject private PhotoUploadTaskQueue mQueue;
+    @Inject Bus mBus;
+    @Inject PhotoUploadTaskQueue mQueue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +48,7 @@ public class FindForMeActivity extends Activity {
     }
 
     @OnClick(R.id.fl_take_photo)
-    private void takePhoto(){
+    void takePhoto(){
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
@@ -64,10 +65,12 @@ public class FindForMeActivity extends Activity {
             //2 - setup a small remote server
             try {
                 //File imageFile = new File(imageBitmap);
-                mQueue.add(new PhotoUploadTask(createImageFile(imageBitmap)));
+                PhotoUploadTask task = new PhotoUploadTask(this, createImageFile(imageBitmap));
+                mQueue.add(task);
             }
             catch(IOException e){
                 //
+                e.printStackTrace();
             }
         }
     }
@@ -109,5 +112,11 @@ public class FindForMeActivity extends Activity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    @Subscribe
+    public void onUploadSuccess(PhotoUploadSuccessEvent event) {
+        Toast.makeText(this, "Upload completed", Toast.LENGTH_SHORT).show();
+    }
+
 
 }

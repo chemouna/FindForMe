@@ -3,6 +3,7 @@ package mona.android.findforme.services;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
+import android.util.Log;
 
 import com.squareup.otto.Bus;
 
@@ -18,8 +19,8 @@ import mona.android.findforme.tasks.PhotoUploadTaskQueue;
  */
 public class PhotoUploadTaskService extends Service implements PhotoUploadTask.Callback {
 
-    @Inject private PhotoUploadTaskQueue mQueue;
-    @Inject private Bus mBus;
+    @Inject PhotoUploadTaskQueue mQueue;
+    @Inject Bus mBus;
 
     private boolean mRunning = false;
 
@@ -43,12 +44,13 @@ public class PhotoUploadTaskService extends Service implements PhotoUploadTask.C
     public void onSuccess(String url) {
         mRunning = false;
         mQueue.remove();
-        mBus.post(new PhotoUploadSuccessEvent());
+        mBus.post(new PhotoUploadSuccessEvent(url));
         executeNext();
     }
 
     @Override
     public void onFailure() {
+        Log.i("TEST", " Upload failure ");
     }
 
     @Override
