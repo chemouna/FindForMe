@@ -1,11 +1,14 @@
 package mona.android.findforme.tasks;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.webkit.MimeTypeMap;
 
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.annotations.Expose;
 import com.google.gson.internal.bind.DateTypeAdapter;
 import com.squareup.tape.Task;
 
@@ -18,21 +21,22 @@ import retrofit.RestAdapter;
 import retrofit.client.OkClient;
 import retrofit.converter.GsonConverter;
 import retrofit.mime.TypedFile;
+import retrofit.mime.TypedString;
 
 /**
  * Created by cheikhna on 03/08/2014.
  */
 public class PhotoUploadTask implements Task<PhotoUploadTask.Callback> {
 
+    private static final long serialVersionUID = 1L;
+
     private static final String FIND_FOR_ME_BACKEND = "http://findforme-backend.herokuapp.com/";
+    private static final Handler MAIN_THREAD = new Handler(Looper.getMainLooper());
 
     private final File mFile;
-    private RestAdapter mRestAdapter;
-    private FindForMeService mService;
 
     public PhotoUploadTask(File file){
         this.mFile = file;
-        init();
     }
 
     public PhotoUploadTask(Context context, File file){
@@ -50,28 +54,45 @@ public class PhotoUploadTask implements Task<PhotoUploadTask.Callback> {
             mService = mRestAdapter.create(FindForMeService.class);
         }
         catch(IOException e){*/
-            init();
+            //init();
         //}
         this.mFile = file;
     }
 
-    public void init(){
-        mRestAdapter = new RestAdapter.Builder()
-                .setEndpoint(FIND_FOR_ME_BACKEND)
-                .build();
-        mService = mRestAdapter.create(FindForMeService.class);
-    }
-
     public interface Callback {
-        void onSuccess(String url);
+        void onSuccess();
         void onFailure();
     }
 
     @Override
-    public void execute(Callback callback) {
+    public void execute(final Callback callback) {
         //TODO: add code here to send photo to server
         //maybe use retrofit's with POST
-        mService.uploadPhoto(new TypedFile("images/png", mFile));
+        RestAdapter mRestAdapter = new RestAdapter.Builder()
+                .setEndpoint(FIND_FOR_ME_BACKEND)
+                .build();
+        final FindForMeService mService = mRestAdapter.create(FindForMeService.class);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                boolean result = mService.uploadPhoto(new TypedFile("images/png", mFile));
+                if (result) {
+                    MAIN_THREAD.post(new Runnable() {
+                         @Override
+                         public void run() {
+                             callback.onSuccess();
+                         }
+                     });
+                } else {
+                    MAIN_THREAD.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            callback.onFailure();
+                        }
+                    });
+                }
+            }
+        }).start();
     }
 
 }

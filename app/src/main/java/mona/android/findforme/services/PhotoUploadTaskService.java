@@ -19,6 +19,8 @@ import mona.android.findforme.tasks.PhotoUploadTaskQueue;
  */
 public class PhotoUploadTaskService extends Service implements PhotoUploadTask.Callback {
 
+    public static final String TAG = "PhotoUploadTaskService";
+
     @Inject PhotoUploadTaskQueue mQueue;
     @Inject Bus mBus;
 
@@ -37,14 +39,24 @@ public class PhotoUploadTaskService extends Service implements PhotoUploadTask.C
     }
 
     private void executeNext(){
+        if (mRunning) return; // Only one task at a time.
 
+        PhotoUploadTask task = mQueue.peek();
+        if (task != null) {
+            mRunning = true;
+            task.execute(this);
+        } else {
+            Log.i(TAG, "Service stopping!");
+            stopSelf(); // No more tasks are present. Stop.
+        }
     }
 
     @Override
-    public void onSuccess(String url) {
+    public void onSuccess() {
+        Log.i("TEST", " onSuccess ");
         mRunning = false;
         mQueue.remove();
-        mBus.post(new PhotoUploadSuccessEvent(url));
+        mBus.post(new PhotoUploadSuccessEvent());
         executeNext();
     }
 

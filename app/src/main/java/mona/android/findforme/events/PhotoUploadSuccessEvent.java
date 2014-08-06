@@ -5,10 +5,10 @@ package mona.android.findforme.events;
  */
 public class PhotoUploadSuccessEvent {
 
-    public final String url;
+    //public final String url;
 
-    public PhotoUploadSuccessEvent(String url) {
-        this.url = url;
+    public PhotoUploadSuccessEvent() {
+
     }
 
 }

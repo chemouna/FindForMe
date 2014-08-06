@@ -13,7 +13,9 @@ import dagger.Module;
 import dagger.ObjectGraph;
 import dagger.Provides;
 import mona.android.findforme.services.PhotoUploadTaskService;
+import mona.android.findforme.tasks.PhotoUploadTask;
 import mona.android.findforme.tasks.PhotoUploadTaskQueue;
+import mona.android.findforme.util.GsonConverter;
 
 /**
  * Created by cheikhna on 03/08/2014.
@@ -38,6 +40,7 @@ public class FindForMeApplication extends Application {
             PhotoUploadTaskService.class
         }
     )
+
     static class MainModule {
         private final Context appContext;
 

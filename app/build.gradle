@@ -5,12 +5,14 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:0.12.+'
+        classpath 'com.jakewharton.hugo:hugo-plugin:1.1.0'
     }
 }
 
 lpreview = hasProperty('lpreview')
 
 apply plugin: 'android'
+apply plugin: 'hugo'
 
 android {
     //compileSdkVersion 'android-L'
