@@ -5,6 +5,7 @@ import android.content.Intent;
 
 import com.google.gson.Gson;
 import com.squareup.otto.Bus;
+import com.squareup.otto.Produce;
 import com.squareup.tape.FileObjectQueue;
 import com.squareup.tape.ObjectQueue;
 import com.squareup.tape.TaskInjector;
@@ -13,6 +14,8 @@ import com.squareup.tape.TaskQueue;
 import java.io.File;
 import java.io.IOException;
 
+import hugo.weaving.DebugLog;
+import mona.android.findforme.events.PhotoUploadQueueSizeEvent;
 import mona.android.findforme.services.PhotoUploadTaskService;
 import mona.android.findforme.util.GsonConverter;
 
@@ -37,22 +40,33 @@ public class PhotoUploadTaskQueue extends TaskQueue<PhotoUploadTask> {
         }
     }
 
+    @DebugLog
     private void startService() {
         context.startService(new Intent(context, PhotoUploadTaskService.class));
     }
 
+    @DebugLog
     @Override
     public void add(PhotoUploadTask entry){
         super.add(entry);
-        //bus.post(produceSizeChanged());
+        bus.post(produceSizeChanged());
         startService();
     }
 
+    @DebugLog
     @Override
     public void remove(){
         super.remove();
+        bus.post(produceSizeChanged());
     }
 
+    @SuppressWarnings("UnusedDeclaration") // Used by event bus.
+    @Produce
+    public PhotoUploadQueueSizeEvent produceSizeChanged() {
+        return new PhotoUploadQueueSizeEvent(size());
+    }
+
+    @DebugLog
     public static PhotoUploadTaskQueue create(Context context, Gson gson, Bus bus) {
         FileObjectQueue.Converter<PhotoUploadTask> converter = new GsonConverter<PhotoUploadTask>(gson, PhotoUploadTask.class);
         File queueFile = new File(context.getFilesDir(), FILENAME);

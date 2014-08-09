@@ -66,7 +66,8 @@ dependencies {
     compile 'com.squareup:tape:1.2.2'
 
     //compile 'com.squareup.okhttp:okhttp:2.0.0-REPACKAGED-OKIO'
-    compile 'com.squareup.retrofit:retrofit:1.6.1'
+    compile 'com.squareup.retrofit:retrofit:1.6.+'
+    compile 'com.github.kevinsawicki:http-request:5.6'
 
     /*compile 'com.squareup.okhttp:okhttp:2.0.0'
     compile 'com.squareup.okhttp:okhttp-urlconnection:2.0.0'*/

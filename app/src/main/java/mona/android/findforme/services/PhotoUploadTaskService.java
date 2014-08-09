@@ -9,6 +9,7 @@ import com.squareup.otto.Bus;
 
 import javax.inject.Inject;
 
+import hugo.weaving.DebugLog;
 import mona.android.findforme.FindForMeApplication;
 import mona.android.findforme.events.PhotoUploadSuccessEvent;
 import mona.android.findforme.tasks.PhotoUploadTask;
@@ -32,25 +33,31 @@ public class PhotoUploadTaskService extends Service implements PhotoUploadTask.C
         ((FindForMeApplication) getApplication()).inject(this);
     }
 
+    @DebugLog
     @Override
     public int onStartCommand(Intent intent, int flags, int startId){
         executeNext();
         return START_STICKY;
     }
 
+    @DebugLog
     private void executeNext(){
+        Log.i("TEST", " executeNext called with running = "+ mRunning);
         if (mRunning) return; // Only one task at a time.
 
         PhotoUploadTask task = mQueue.peek();
         if (task != null) {
-            mRunning = true;
+            Log.i("TEST", " executeNext - executing a new task ");
             task.execute(this);
+            mRunning = true;
         } else {
             Log.i(TAG, "Service stopping!");
+            Log.i("TEST", " executeNext - oups no more tasks -> service stopping ");
             stopSelf(); // No more tasks are present. Stop.
         }
     }
 
+    @DebugLog
     @Override
     public void onSuccess() {
         Log.i("TEST", " onSuccess ");
@@ -60,6 +67,7 @@ public class PhotoUploadTaskService extends Service implements PhotoUploadTask.C
         executeNext();
     }
 
+    @DebugLog
     @Override
     public void onFailure() {
         Log.i("TEST", " Upload failure ");

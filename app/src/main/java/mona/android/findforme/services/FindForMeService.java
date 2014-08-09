@@ -4,6 +4,7 @@ import retrofit.http.Multipart;
 import retrofit.http.POST;
 import retrofit.http.PUT;
 import retrofit.http.Part;
+import retrofit.http.Query;
 import retrofit.mime.TypedFile;
 import retrofit.mime.TypedString;
 
@@ -13,10 +14,8 @@ import retrofit.mime.TypedString;
 public interface FindForMeService {
 
     @Multipart
-    @POST("/photo")
-    boolean uploadPhoto(@Part("photo") TypedFile photo);
-    /*@PUT("/addPhoto")
-    boolean uploadPhoto(@Part("photo") TypedFile photo, @Part("filename") TypedString filename,
-                    @Part("mimeType") TypedString mimeType);*/
+    @POST("/files")
+    boolean uploadPhoto(@Part("file") TypedFile photo);
+    //@Part("contentLength") TypedString contentLength);
 
 }

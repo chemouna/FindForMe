@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
@@ -23,6 +24,8 @@ import javax.inject.Inject;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import hugo.weaving.DebugLog;
+import mona.android.findforme.events.PhotoUploadQueueSizeEvent;
 import mona.android.findforme.events.PhotoUploadSuccessEvent;
 import mona.android.findforme.tasks.PhotoUploadTask;
 import mona.android.findforme.tasks.PhotoUploadTaskQueue;
@@ -55,6 +58,7 @@ public class FindForMeActivity extends Activity {
         }
     }
 
+    @DebugLog
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
@@ -65,7 +69,7 @@ public class FindForMeActivity extends Activity {
             //2 - setup a small remote server
             try {
                 //File imageFile = new File(imageBitmap);
-                PhotoUploadTask task = new PhotoUploadTask(this, createImageFile(imageBitmap));
+                PhotoUploadTask task = new PhotoUploadTask(createImageFile(imageBitmap));
                 mQueue.add(task);
             }
             catch(IOException e){
@@ -113,10 +117,15 @@ public class FindForMeActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
+    @SuppressWarnings("UnusedDeclaration") // Used by event bus.
     @Subscribe
     public void onUploadSuccess(PhotoUploadSuccessEvent event) {
         Toast.makeText(this, "Upload completed", Toast.LENGTH_SHORT).show();
     }
 
+    @SuppressWarnings("UnusedDeclaration") // Used by event bus.
+    @Subscribe public void onQueueSizeChanged(PhotoUploadQueueSizeEvent event) {
+        Log.i("TEST", " onQueueSizeChanged called ");
+    }
 
 }

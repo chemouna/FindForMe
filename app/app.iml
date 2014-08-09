@@ -84,6 +84,7 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="guava-15.0" level="project" />
     <orderEntry type="library" exported="" name="gson-2.2.4" level="project" />
+    <orderEntry type="library" exported="" name="http-request-5.6" level="project" />
     <orderEntry type="library" exported="" name="dagger-1.2.2" level="project" />
     <orderEntry type="library" exported="" name="repackaged-okio-1.0.0" level="project" />
     <orderEntry type="library" exported="" name="repackaged-okhttp-2.0.0" level="project" />
