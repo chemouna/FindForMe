@@ -5,4 +5,8 @@
     <dimen name="take_photo_fab_height">56dp</dimen>
     <dimen name="fab_elevation">2dp</dimen>
 
+    <dimen name="margin_lr_logins">8dp</dimen>
+
+    <dimen name="login_button_height">65dp</dimen>
+
 </resources>

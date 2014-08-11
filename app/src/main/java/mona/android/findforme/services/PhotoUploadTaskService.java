@@ -42,17 +42,14 @@ public class PhotoUploadTaskService extends Service implements PhotoUploadTask.C
 
     @DebugLog
     private void executeNext(){
-        Log.i("TEST", " executeNext called with running = "+ mRunning);
         if (mRunning) return; // Only one task at a time.
 
         PhotoUploadTask task = mQueue.peek();
         if (task != null) {
-            Log.i("TEST", " executeNext - executing a new task ");
             task.execute(this);
             mRunning = true;
         } else {
             Log.i(TAG, "Service stopping!");
-            Log.i("TEST", " executeNext - oups no more tasks -> service stopping ");
             stopSelf(); // No more tasks are present. Stop.
         }
     }

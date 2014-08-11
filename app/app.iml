@@ -84,10 +84,14 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="guava-15.0" level="project" />
     <orderEntry type="library" exported="" name="gson-2.2.4" level="project" />
-    <orderEntry type="library" exported="" name="http-request-5.6" level="project" />
+    <orderEntry type="library" exported="" name="library-0.3.2" level="project" />
     <orderEntry type="library" exported="" name="dagger-1.2.2" level="project" />
+    <orderEntry type="library" exported="" name="twitter4j-core-4.0.1" level="project" />
     <orderEntry type="library" exported="" name="repackaged-okio-1.0.0" level="project" />
     <orderEntry type="library" exported="" name="repackaged-okhttp-2.0.0" level="project" />
+    <orderEntry type="library" exported="" name="timber-2.4.1" level="project" />
+    <orderEntry type="library" exported="" name="facebook-3.14.1" level="project" />
+    <orderEntry type="library" exported="" name="support-v4-20.0.0" level="project" />
     <orderEntry type="library" exported="" name="dagger-compiler-1.2.2" level="project" />
     <orderEntry type="library" exported="" name="hugo-runtime-1.1.0" level="project" />
     <orderEntry type="library" exported="" name="otto-1.3.5" level="project" />
@@ -96,7 +100,9 @@
     <orderEntry type="library" exported="" name="repackaged-okhttp-urlconnection-2.0.0" level="project" />
     <orderEntry type="library" exported="" name="retrofit-1.6.1" level="project" />
     <orderEntry type="library" exported="" name="hugo-annotations-1.1.0" level="project" />
+    <orderEntry type="library" exported="" name="play-services-4.3.23" level="project" />
     <orderEntry type="library" exported="" name="javax.inject-1" level="project" />
+    <orderEntry type="library" exported="" name="support-annotations-20.0.0" level="project" />
     <orderEntry type="library" exported="" name="butterknife-5.1.2" level="project" />
     <orderEntry type="library" exported="" name="javawriter-2.5.0" level="project" />
   </component>

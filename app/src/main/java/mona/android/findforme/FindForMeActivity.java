@@ -1,6 +1,5 @@
 package mona.android.findforme;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -30,7 +29,7 @@ import mona.android.findforme.events.PhotoUploadSuccessEvent;
 import mona.android.findforme.tasks.PhotoUploadTask;
 import mona.android.findforme.tasks.PhotoUploadTaskQueue;
 
-public class FindForMeActivity extends Activity {
+public class FindForMeActivity extends BaseActivity {
 
     private static final int REQUEST_IMAGE_CAPTURE = 1;
 
@@ -40,14 +39,10 @@ public class FindForMeActivity extends Activity {
     @Inject PhotoUploadTaskQueue mQueue;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+      protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        ((FindForMeApplication) getApplication()).inject(this);
-
         setContentView(R.layout.find_for_me);
         ButterKnife.inject(this);
-
     }
 
     @OnClick(R.id.fl_take_photo)
