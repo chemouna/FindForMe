@@ -9,4 +9,12 @@
 
     <dimen name="login_button_height">65dp</dimen>
 
+    <dimen name="keyline_1">16dp</dimen>
+
+    <dimen name="keyline_1_minus_8dp">8dp</dimen>
+
+    <dimen name="fab_press_translation_z">2dp</dimen>
+
+    <dimen name="find_item_image_height">60dp</dimen>
+
 </resources>

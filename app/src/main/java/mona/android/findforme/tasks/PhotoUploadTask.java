@@ -11,10 +11,11 @@ import java.io.File;
 import javax.inject.Inject;
 
 import hugo.weaving.DebugLog;
-import mona.android.findforme.services.FindForMeService;
+import mona.android.findforme.data.api.FindForMeService;
 import retrofit.RestAdapter;
 import retrofit.client.OkClient;
 import retrofit.mime.TypedFile;
+import timber.log.Timber;
 
 /**
  * Created by cheikhna on 03/08/2014.
@@ -23,13 +24,13 @@ public class PhotoUploadTask implements Task<PhotoUploadTask.Callback> {
 
     private static final long serialVersionUID = 126142781146165256L;
 
-    private static final String FIND_FOR_ME_BACKEND = "http://findforme-backend.herokuapp.com";
     private static final Handler MAIN_THREAD = new Handler(Looper.getMainLooper());
+    private static final String STATUS_SUCCESS = "success";
 
     private final File mFile;
 
     @Inject
-    OkHttpClient mOkHttpClient;
+    FindForMeService mService;
 
     public PhotoUploadTask(File file) {
         this.mFile = file;
@@ -44,21 +45,14 @@ public class PhotoUploadTask implements Task<PhotoUploadTask.Callback> {
     @DebugLog
     @Override
     public void execute(final Callback callback) {
-        //TODO: add code here to send photo to server
-        //maybe use retrofit's with POST
-
-        //OkHttpClient client = new OkHttpClient();
-        RestAdapter mRestAdapter = new RestAdapter.Builder()
-                .setLogLevel(RestAdapter.LogLevel.FULL)
-                .setEndpoint(FIND_FOR_ME_BACKEND)
-                .setClient(new OkClient(mOkHttpClient))
-                .build();
-
-        final FindForMeService mService = mRestAdapter.create(FindForMeService.class);
         new Thread(new Runnable() {
             @Override
             public void run() {
-                boolean result = mService.uploadPhoto(new TypedFile("images/png", mFile));
+                String uploadedStatus = mService.uploadPhoto(new TypedFile("images/png", mFile));
+                Timber.d(" uploadedStatus : %s ", uploadedStatus);
+                boolean result = uploadedStatus.equals(STATUS_SUCCESS);
+                //temporary
+                Timber.d("result : "+ result);
                 if (result) {
                     MAIN_THREAD.post(new Runnable() {
                         @Override
@@ -76,7 +70,6 @@ public class PhotoUploadTask implements Task<PhotoUploadTask.Callback> {
                 }
             }
         }).start();
-
     }
 
 }

@@ -11,10 +11,19 @@ import butterknife.ButterKnife;
  */
 public class BaseActivity extends FragmentActivity {
 
+    /**
+     (Not included in open sourced sample)
+     TODO:
+     - add NavigationDrawer to it (exple in iosched + use dagger & butterKnife where suited
+     - have a super modularized code
+
+     */
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FindForMeApplication.get(this).inject(this);
     }
+
 
 }

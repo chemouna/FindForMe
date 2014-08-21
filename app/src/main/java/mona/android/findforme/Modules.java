@@ -1,6 +1,9 @@
-package mona.android.findforme.modules;
+package mona.android.findforme;
 
 import mona.android.findforme.FindForMeApplication;
+import mona.android.findforme.MainModule;
+import mona.android.findforme.data.DataModule;
+import mona.android.findforme.ui.UiModule;
 
 /**
  * Created by cheikhna on 10/08/2014.
@@ -9,8 +12,7 @@ public class Modules {
 
     public static Object[] list(FindForMeApplication app) {
         return new Object[]{
-            new MainModule(app),
-            new DataModule(app)
+            new FindForMeModule(app)
         };
     }
 

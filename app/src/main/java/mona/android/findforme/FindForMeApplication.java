@@ -2,11 +2,12 @@ package mona.android.findforme;
 
 import android.app.Application;
 import android.content.Context;
+import android.os.StrictMode;
 
 import dagger.ObjectGraph;
 import hugo.weaving.DebugLog;
 import timber.log.Timber;
-import mona.android.findforme.modules.Modules;
+
 /**
  * Created by cheikhna on 03/08/2014.
  */
@@ -19,7 +20,17 @@ public class FindForMeApplication extends Application {
 
         if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());
-
+            //temporary for debugging
+            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+                    .detectAll()
+                    .penaltyLog()
+                    .penaltyDialog()
+                    .build());
+            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+                    .detectAll()
+                    .penaltyDeath()
+                    .penaltyLog()
+                    .build());
         } else {
             // TODO Crashlytics.start(this); or Crittercism
             // TODO Timber.plant(new CrashlyticsTree());

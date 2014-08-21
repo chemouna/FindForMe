@@ -7,4 +7,6 @@
 
     <color name="theme_accent_1">#b2dfdb</color>
 
+    <color name="theme_accent_1_light">#b2dfff</color>
+
 </resources>
