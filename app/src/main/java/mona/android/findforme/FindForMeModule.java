@@ -8,6 +8,7 @@ import dagger.Module;
 import dagger.Provides;
 import mona.android.findforme.data.DataModule;
 import mona.android.findforme.services.PhotoUploadTaskService;
+import mona.android.findforme.tasks.PhotoUploadTask;
 import mona.android.findforme.tasks.PhotoUploadTaskQueue;
 import mona.android.findforme.ui.UiModule;
 import mona.android.findforme.ui.grid.GridContainer;
@@ -23,10 +24,10 @@ import mona.android.findforme.ui.grid.GridContainer;
     },
     injects = {
             FindForMeApplication.class,
-            FindForMeApplication.class,
             FindForMeActivity.class,
             PhotoUploadTaskQueue.class,
             PhotoUploadTaskService.class,
+            PhotoUploadTask.class,
             GridContainer.class
     }
 )
@@ -38,6 +39,6 @@ public class FindForMeModule {
     }
 
     @Provides @Singleton
-    Application providesApplication() { return app; }
+    Application provideApplication() { return app; }
 
 }

@@ -46,7 +46,7 @@ public class PhotoUploadTaskService extends Service implements PhotoUploadTask.C
 
         PhotoUploadTask task = mQueue.peek();
         if (task != null) {
-            task.execute(this);
+            task.execute(this, this);
             mRunning = true;
         } else {
             Log.i(TAG, "Service stopping!");

@@ -1,17 +1,22 @@
 package mona.android.findforme.tasks;
 
+import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
+import android.widget.Toast;
 
 import com.squareup.okhttp.OkHttpClient;
-import com.squareup.tape.Task;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 
 import javax.inject.Inject;
 
 import hugo.weaving.DebugLog;
+import mona.android.findforme.FindForMeApplication;
 import mona.android.findforme.data.api.FindForMeService;
+import mona.android.findforme.tape.Task;
 import retrofit.RestAdapter;
 import retrofit.client.OkClient;
 import retrofit.mime.TypedFile;
@@ -20,17 +25,15 @@ import timber.log.Timber;
 /**
  * Created by cheikhna on 03/08/2014.
  */
-public class PhotoUploadTask implements Task<PhotoUploadTask.Callback> {
-
-    private static final long serialVersionUID = 126142781146165256L;
+public class PhotoUploadTask extends Task<PhotoUploadTask.Callback> {
 
     private static final Handler MAIN_THREAD = new Handler(Looper.getMainLooper());
     private static final String STATUS_SUCCESS = "success";
 
-    private final File mFile;
+    transient File mFile;
 
     @Inject
-    FindForMeService mService;
+    transient FindForMeService mService;
 
     public PhotoUploadTask(File file) {
         this.mFile = file;
@@ -42,9 +45,13 @@ public class PhotoUploadTask implements Task<PhotoUploadTask.Callback> {
         void onFailure();
     }
 
-    @DebugLog
     @Override
-    public void execute(final Callback callback) {
+    public void execute(final Context context, Callback callback) {
+        super.execute(context, callback);
+
+        FindForMeApplication.get(context).inject(this);
+
+        //maybe there's no need to create a new thread
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -54,17 +61,19 @@ public class PhotoUploadTask implements Task<PhotoUploadTask.Callback> {
                 //temporary
                 Timber.d("result : "+ result);
                 if (result) {
-                    MAIN_THREAD.post(new Runnable() {
+                    Toast.makeText(context, "SUCCESS", Toast.LENGTH_LONG);
+                    /*MAIN_THREAD.post(new Runnable() {
                         @Override
                         public void run() {
                             callback.onSuccess();
                         }
-                    });
+                    });*/
                 } else {
                     MAIN_THREAD.post(new Runnable() {
                         @Override
                         public void run() {
-                            callback.onFailure();
+                            Toast.makeText(context, "FAILURE", Toast.LENGTH_LONG);
+                            //callback.onFailure();
                         }
                     });
                 }

@@ -33,12 +33,6 @@ import timber.log.Timber;
  * Created by cheikhna on 11/08/2014.
  */
 @Module(
-    /*injects = {
-        LoginActivity.class,
-        FindForMeActivity.class,
-        GridContainer.class,
-        PhotoUploadTask.class
-    },*/
     complete = false,
     library = true
 )

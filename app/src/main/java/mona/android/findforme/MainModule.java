@@ -23,6 +23,7 @@ import mona.android.findforme.LoginActivity;
 import mona.android.findforme.services.PhotoUploadTaskService;
 import mona.android.findforme.tasks.PhotoUploadTask;
 import mona.android.findforme.tasks.PhotoUploadTaskQueue;
+import mona.android.findforme.tasks.PhotoUploadTaskSerializer;
 import mona.android.findforme.util.AppUtils;
 import timber.log.Timber;
 
@@ -50,7 +51,10 @@ public final class MainModule {
     @Provides
     @Singleton
     Gson provideGson() {
-        return new GsonBuilder().create();
+        return new GsonBuilder().
+                    registerTypeAdapter(PhotoUploadTask.class,
+                                new PhotoUploadTaskSerializer()).
+                    create();
     }
 
     @Provides

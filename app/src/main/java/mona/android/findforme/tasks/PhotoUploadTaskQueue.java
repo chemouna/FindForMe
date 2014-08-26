@@ -8,8 +8,6 @@ import com.squareup.otto.Bus;
 import com.squareup.otto.Produce;
 import com.squareup.tape.FileObjectQueue;
 import com.squareup.tape.ObjectQueue;
-import com.squareup.tape.TaskInjector;
-import com.squareup.tape.TaskQueue;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,7 +15,8 @@ import java.io.IOException;
 import hugo.weaving.DebugLog;
 import mona.android.findforme.events.PhotoUploadQueueSizeEvent;
 import mona.android.findforme.services.PhotoUploadTaskService;
-import mona.android.findforme.util.GsonConverter;
+import mona.android.findforme.tape.TaskQueue;
+import mona.android.findforme.tape.GsonConverter;
 
 /**
  * Created by cheikhna on 03/08/2014.
@@ -27,14 +26,15 @@ public class PhotoUploadTaskQueue extends TaskQueue<PhotoUploadTask> {
     private static final String FILENAME = "photo_upload_task_queue";
 
     private final Context context;
+
     private final Bus bus;
 
+    //TODO: make bus, context injectable and not depend it on them in constructor
     public PhotoUploadTaskQueue(ObjectQueue<PhotoUploadTask> delegate, Context context, Bus bus){
         super(delegate);
         this.context = context;
         this.bus = bus;
         bus.register(this);
-
         if(size() > 0){
             startService();
         }

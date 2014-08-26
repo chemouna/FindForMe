@@ -103,7 +103,6 @@ public class FindForMeActivity extends BaseActivity {
                 PhotoUploadTask task = new PhotoUploadTask(createImageFile(imageBitmap));
                 mQueue.add(task);
             } catch (IOException e) {
-                //
                 e.printStackTrace();
             }
         }
