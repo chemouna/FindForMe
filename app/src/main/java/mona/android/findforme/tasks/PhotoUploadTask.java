@@ -30,7 +30,7 @@ public class PhotoUploadTask extends Task<PhotoUploadTask.Callback> {
     private static final Handler MAIN_THREAD = new Handler(Looper.getMainLooper());
     private static final String STATUS_SUCCESS = "success";
 
-    transient File mFile;
+    private File mFile;
 
     @Inject
     transient FindForMeService mService;
@@ -46,7 +46,7 @@ public class PhotoUploadTask extends Task<PhotoUploadTask.Callback> {
     }
 
     @Override
-    public void execute(final Context context, Callback callback) {
+    public void execute(final Context context, final Callback callback) {
         super.execute(context, callback);
 
         FindForMeApplication.get(context).inject(this);
@@ -61,19 +61,17 @@ public class PhotoUploadTask extends Task<PhotoUploadTask.Callback> {
                 //temporary
                 Timber.d("result : "+ result);
                 if (result) {
-                    Toast.makeText(context, "SUCCESS", Toast.LENGTH_LONG);
-                    /*MAIN_THREAD.post(new Runnable() {
+                    MAIN_THREAD.post(new Runnable() {
                         @Override
                         public void run() {
                             callback.onSuccess();
                         }
-                    });*/
+                    });
                 } else {
                     MAIN_THREAD.post(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(context, "FAILURE", Toast.LENGTH_LONG);
-                            //callback.onFailure();
+                            callback.onFailure();
                         }
                     });
                 }

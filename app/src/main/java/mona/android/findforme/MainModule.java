@@ -52,8 +52,8 @@ public final class MainModule {
     @Singleton
     Gson provideGson() {
         return new GsonBuilder().
-                    registerTypeAdapter(PhotoUploadTask.class,
-                                new PhotoUploadTaskSerializer()).
+                    /*registerTypeAdapter(PhotoUploadTask.class,
+                                new PhotoUploadTaskSerializer()).*/
                     create();
     }
 
