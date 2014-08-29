@@ -24,12 +24,6 @@ android {
     buildToolsVersion '19.1.0'
 
     productFlavors { project.ext.lpropPreview ? lpreview {} : classic {} }
-    /*productFlavors {
-        lpreview {
-        }
-        classic {
-        }
-    }*/
 
     defaultConfig lpropPreview ? {
         minSdkVersion 14
@@ -57,7 +51,6 @@ android {
     }*/
 
     sourceSets {
-
         androidTest.setRoot('tests')
     }
 }

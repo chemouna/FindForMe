@@ -1,6 +1,7 @@
 package mona.android.findforme.ui.grid;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,9 +14,11 @@ import java.util.Collections;
 import java.util.List;
 
 import butterknife.ButterKnife;
+import hugo.weaving.DebugLog;
 import mona.android.findforme.R;
 import mona.android.findforme.data.api.model.FindItem;
 import mona.android.findforme.ui.common.BindableAdapter;
+import mona.android.findforme.ui.widget.GridItemView;
 
 /**
  * Created by cheikhna on 16/08/2014.
@@ -51,15 +54,12 @@ public class GridAdapter extends BindableAdapter<FindItem> {
         return itemView;
     }
 
-    @Override public void bindView(FindItem item, int position, View view) {
-        //((GalleryItemView) view).bindTo(item, picasso);
-        RequestCreator request = picasso.load(item.imageLink);
-        ImageView itemImage = (ImageView) view.findViewById(R.id.iv_find_item_image);
-        request.resize(itemImage.getMeasuredWidth(), itemImage.getMeasuredHeight())
-                        .centerCrop().into(itemImage);
-
+    @Override
+    public void bindView(FindItem item, int position, View view) {
+        ((GridItemView) view).bindTo(item, picasso);
     }
 
+    @DebugLog
     public void replaceWithItems(List<FindItem> items){
         this.items = items;
         notifyDataSetChanged();

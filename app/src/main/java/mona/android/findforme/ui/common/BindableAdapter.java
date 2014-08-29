@@ -24,9 +24,11 @@ public abstract class BindableAdapter<T> extends BaseAdapter {
         return context;
     }
 
-    @Override public abstract T getItem(int position);
+    @Override
+    public abstract T getItem(int position);
 
-    @Override public final View getView(int position, View view, ViewGroup container) {
+    @Override
+    public final View getView(int position, View view, ViewGroup container) {
         if (view == null) {
             view = newView(inflater, position, container);
             if (view == null) {
@@ -43,7 +45,8 @@ public abstract class BindableAdapter<T> extends BaseAdapter {
     /** Bind the data for the specified {@code position} to the view. */
     public abstract void bindView(T item, int position, View view);
 
-    @Override public final View getDropDownView(int position, View view, ViewGroup container) {
+    @Override
+    public final View getDropDownView(int position, View view, ViewGroup container) {
         if (view == null) {
             view = newDropDownView(inflater, position, container);
             if (view == null) {

@@ -2,6 +2,7 @@ package mona.android.findforme.ui.grid;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.AbsListView;
 import android.widget.ViewAnimator;
 
@@ -13,6 +14,7 @@ import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import hugo.weaving.DebugLog;
 import mona.android.findforme.FindForMeApplication;
 import mona.android.findforme.R;
 import mona.android.findforme.data.ItemsLoader;
@@ -47,6 +49,7 @@ public class GridContainer extends ViewAnimator {
         mAdapter = new GridAdapter(context, mPicasso);
     }
 
+    @DebugLog
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
@@ -55,6 +58,7 @@ public class GridContainer extends ViewAnimator {
         mGridView.setAdapter(mAdapter);
     }
 
+    @DebugLog
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
@@ -62,6 +66,7 @@ public class GridContainer extends ViewAnimator {
         mSubscription = mItemsLoader.loadItems(mType, new EndlessObserver<List<FindItem>>() {
             @Override
             public void onNext(List<FindItem> findItems) {
+                Log.i("TEST", " onNext called with items size : " + findItems.size());
                 mAdapter.replaceWithItems(findItems);
             }
         });

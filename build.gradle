@@ -11,6 +11,11 @@ buildscript {
 
 allprojects {
     repositories {
-        jcenter()
+        mavenCentral()
     }
+
+    tasks.withType(Compile) {
+        options.encoding = "UTF-8"
+    }
+
 }

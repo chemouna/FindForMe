@@ -1,5 +1,7 @@
 package mona.android.findforme.data;
 
+import android.util.Log;
+
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -7,6 +9,7 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import hugo.weaving.DebugLog;
 import mona.android.findforme.data.api.FindForMeService;
 import mona.android.findforme.data.api.Type;
 import mona.android.findforme.data.api.model.FindItem;
@@ -37,14 +40,17 @@ public class ItemsLoader {
         mFindForMeService = service;
     }
 
+    @DebugLog
     public Subscription loadItems(final Type type, Observer<List<FindItem>> observer){
         List<FindItem> items = mItemsCache.get(type);
         if(items != null){
+            Log.i("TEST", " loadItems - some items are already cached , emitted");
             observer.onNext(items); //emit what's cached
         }
 
         PublishSubject<List<FindItem>> itemRequest = mItemsRequests.get(type);
-        if(itemRequest !=null){
+        if(itemRequest != null){
+            Log.i("TEST", " loadItems - itemRequest already exist ");
             return itemRequest.subscribe(observer);
         }
 
@@ -53,11 +59,12 @@ public class ItemsLoader {
 
         Subscription subscription = itemRequest.subscribe(observer);
         itemRequest.subscribe(new EndObserver<List<FindItem>>() {
+            @DebugLog
             @Override
             public void onEnd(){
                 mItemsRequests.remove(type);
             }
-
+            @DebugLog
             @Override
             public void onNext(List<FindItem> findItems) {
                 mItemsCache.put(type, findItems);
@@ -67,13 +74,14 @@ public class ItemsLoader {
         //To test this part we need some response from server
         mFindForMeService.listItems(type, Sort.POPULAR, 1)
                 .map(new ResponseToFindItemList())
-                .flatMap(new Func1<List<FindItem>, Observable<FindItem>>() {
+                /*.flatMap(new Func1<List<FindItem>, Observable<FindItem>>() {
                     @Override
                     public Observable<FindItem> call(List<FindItem> items) {
+                        Log.i("TEST", " items received in flatMap size : "+ items.size());
                         return Observable.from(items);
                     }
                 })
-                .toList()
+                .toList()*/
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(itemRequest);

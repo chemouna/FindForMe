@@ -95,11 +95,7 @@ public class FindForMeActivity extends BaseActivity {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
-            //TODO: 0 - right now maybe just send it directly but maybe later have an upload or cancel option
-            //TODO: 1 - use tape to send image to a server / or take a look at android JobScheduler
-            //2 - setup a small remote server
             try {
-                //File imageFile = new File(imageBitmap);
                 PhotoUploadTask task = new PhotoUploadTask(createImageFile(imageBitmap));
                 mQueue.add(task);
             } catch (IOException e) {
