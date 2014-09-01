@@ -8,11 +8,15 @@ import android.support.v4.app.Fragment;
 import android.widget.Button;
 import android.widget.ImageButton;
 
+import com.androidsocialnetworks.lib.SocialNetwork;
 import com.androidsocialnetworks.lib.SocialNetworkManager;
+import com.androidsocialnetworks.lib.SocialPerson;
 import com.androidsocialnetworks.lib.impl.FacebookSocialNetwork;
 import com.androidsocialnetworks.lib.impl.GooglePlusSocialNetwork;
 import com.androidsocialnetworks.lib.impl.TwitterSocialNetwork;
 import com.androidsocialnetworks.lib.listener.OnLoginCompleteListener;
+import com.androidsocialnetworks.lib.listener.OnRequestSocialPersonCompleteListener;
+import com.google.common.base.Preconditions;
 
 import javax.inject.Inject;
 
@@ -20,12 +24,16 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import hugo.weaving.DebugLog;
+import mona.android.findforme.model.UserProfile;
+import mona.android.findforme.state.ApplicationState;
+import mona.android.findforme.state.persistence.AsyncDatabaseHelper;
 import timber.log.Timber;
 
 /**
  * Created by cheikhna on 09/08/2014.
  */
-public class LoginActivity extends BaseActivity {
+public class LoginActivity extends BaseActivity
+                implements OnLoginCompleteListener, OnRequestSocialPersonCompleteListener {
 
     private static final String SOCIAL_NETWORK_TAG = "social_network_fragment";
 
@@ -42,83 +50,52 @@ public class LoginActivity extends BaseActivity {
     SocialNetworkManager mSocialNetworkManager;
 
     @Inject
-    SharedPreferences mSharedPreferences;
+    AsyncDatabaseHelper mAsyncDbHelper;
+
+    private ApplicationState mState;
+
+    private SocialNetwork mCurrentSocialNetwork;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.login_screen);
-        ButterKnife.inject(this);
+
+        mState = FindForMeApplication.get(this).getApplicationState();
 
         getSupportFragmentManager().beginTransaction().add(
                 mSocialNetworkManager, SOCIAL_NETWORK_TAG).commit();
 
+        verifyPreconditions();
     }
 
-    //TODO: user shouldn't arrive at this screen if he already is connected to one of them
+    private void verifyPreconditions(){
+        mState = Preconditions.checkNotNull(mState, " ApplicationState cannot be null");
+        mSocialNetworkManager = Preconditions.checkNotNull(mSocialNetworkManager, " SocialNetworkManager cannot be null");
+        mAsyncDbHelper = Preconditions.checkNotNull(mAsyncDbHelper, " AsyncDatabaseHelper cannot be null");
+    }
+
+    @Override
+    protected int getContentViewLayoutId() {
+        return R.layout.login_screen;
+    }
 
     @OnClick(R.id.ib_login_google_plus)
     void loginGooglePlus(){
-        GooglePlusSocialNetwork gPlusSocialNetwork = mSocialNetworkManager.getGooglePlusSocialNetwork();
-        if(gPlusSocialNetwork.isConnected()){
-            Timber.w(" Already connected to Google Plus ");
-            return;
-        }
-        gPlusSocialNetwork.requestLogin(new OnLoginCompleteListener() {
-            @DebugLog
-            @Override
-            public void onLoginSuccess(int i) {
-                Timber.d(" getGooglePlusSocialNetwork -  onLoginSuccess ");
-            }
-            @DebugLog
-            @Override
-            public void onError(int i, String s, String s2, Object o) {
-                Timber.d(" getGooglePlusSocialNetwork - onError ");
-            }
-        });
+        mCurrentSocialNetwork = mSocialNetworkManager.getGooglePlusSocialNetwork();
+        mCurrentSocialNetwork.requestLogin(this);
     }
 
     @OnClick(R.id.ib_login_twitter)
     void loginTwitter(){
-        TwitterSocialNetwork twitterSocialNetwork = mSocialNetworkManager.getTwitterSocialNetwork();
-        if(twitterSocialNetwork.isConnected()){
-            Timber.w(" Already connected to Twitter ");
-            return;
-        }
-        twitterSocialNetwork.requestLogin(new OnLoginCompleteListener() {
-            @DebugLog
-            @Override
-            public void onLoginSuccess(int socialNetworkID) {
-                Timber.d(" getTwitterSocialNetwork - onLoginSuccess ");
-            }
-
-            @DebugLog
-            @Override
-            public void onError(int socialNetworkID, String requestID, String errorMessage, Object data) {
-                Timber.d(" getTwitterSocialNetwork - onError ");
-            }
-        });
+        mCurrentSocialNetwork = mSocialNetworkManager.getTwitterSocialNetwork();
+        mCurrentSocialNetwork.requestLogin(this);
+        //maybe an rxJava of one after the other could do it
     }
 
     @OnClick(R.id.ib_login_facebook)
     void loginFacebook(){
-        FacebookSocialNetwork fbSocialNetwork = mSocialNetworkManager.getFacebookSocialNetwork();
-        if(fbSocialNetwork.isConnected()){
-            Timber.w(" Already connected to Facebook ");
-            return;
-        }
-        fbSocialNetwork.requestLogin(new OnLoginCompleteListener() {
-            @DebugLog
-            @Override
-            public void onLoginSuccess(int i) {
-                Timber.d(" getFacebookSocialNetwork - onLoginSuccess ");
-            }
-            @DebugLog
-            @Override
-            public void onError(int i, String s, String s2, Object o) {
-                Timber.d(" getFacebookSocialNetwork - onError ");
-            }
-        });
+        mCurrentSocialNetwork = mSocialNetworkManager.getFacebookSocialNetwork();
+        mCurrentSocialNetwork.requestLogin(this);
     }
 
     @Override
@@ -133,5 +110,32 @@ public class LoginActivity extends BaseActivity {
             fragment.onActivityResult(requestCode, resultCode, data);
         }
     }
+
+    @Override
+    public void onLoginSuccess(int socialNetworkID) {
+        mCurrentSocialNetwork.requestCurrentPerson(this);
+    }
+
+    @Override
+    public void onError(int socialNetworkID, String requestID, String errorMessage, Object data) {
+        Timber.w(" Error in socialNetworkAuth - socialNetworkID : %d - requestId : %s - errorMessage : %s ",
+                    socialNetworkID, requestID, errorMessage);
+    }
+
+    @Override
+    public void onRequestSocialPersonSuccess(int socialNetworkID, SocialPerson socialPerson) {
+        UserProfile profile = new UserProfile(socialNetworkID, socialPerson);
+        mState.setUserProfile(profile);
+        mAsyncDbHelper.put(profile);
+
+        startActivity(new Intent(this, FindForMeActivity.class));
+    }
+
+    //TODO: add logout action - that should run  :
+    /*
+    for (SocialNetwork socialNetwork : socialNetworkManager.getInitializedSocialNetworks()) {
+        socialNetwork.logout();
+    }
+     */
 
 }

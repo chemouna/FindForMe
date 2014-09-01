@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/sv_navdrawer"
+    android:layout_width="@dimen/navdrawer_width"
+    android:layout_height="match_parent"
+    android:layout_gravity="start"
+    android:clipToPadding="false"
+    android:background="@color/navdrawer_background">
+
+        <fragment
+            android:id="@+id/left_drawer_fragment"
+            android:name="mona.android.findforme.fragments.LeftDrawerFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+</ScrollView>

@@ -8,6 +8,7 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import mona.android.findforme.FindForMeActivity;
+import mona.android.findforme.LoginActivity;
 import mona.android.findforme.ui.grid.GridContainer;
 
 /**
@@ -27,5 +28,6 @@ public final class UiModule {
     AppContainer provideAppContainer() {
         return AppContainer.DEFAULT;
     }
+
 
 }

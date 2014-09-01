@@ -4,15 +4,22 @@ import android.app.Application;
 import android.content.Context;
 import android.os.StrictMode;
 
+import javax.inject.Inject;
+
 import dagger.ObjectGraph;
 import hugo.weaving.DebugLog;
+import mona.android.findforme.state.ApplicationState;
 import timber.log.Timber;
 
 /**
  * Created by cheikhna on 03/08/2014.
  */
 public class FindForMeApplication extends Application {
+
     private ObjectGraph mObjectGraph;
+
+    @Inject
+    ApplicationState mApplicationState;
 
     @Override
     public void onCreate(){
@@ -50,6 +57,10 @@ public class FindForMeApplication extends Application {
 
     public static FindForMeApplication get(Context context) {
         return (FindForMeApplication) context.getApplicationContext();
+    }
+
+    public ApplicationState getApplicationState(){
+        return mApplicationState;
     }
 
 }

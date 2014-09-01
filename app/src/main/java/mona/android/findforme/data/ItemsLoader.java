@@ -44,13 +44,11 @@ public class ItemsLoader {
     public Subscription loadItems(final Type type, Observer<List<FindItem>> observer){
         List<FindItem> items = mItemsCache.get(type);
         if(items != null){
-            Log.i("TEST", " loadItems - some items are already cached , emitted");
             observer.onNext(items); //emit what's cached
         }
 
         PublishSubject<List<FindItem>> itemRequest = mItemsRequests.get(type);
         if(itemRequest != null){
-            Log.i("TEST", " loadItems - itemRequest already exist ");
             return itemRequest.subscribe(observer);
         }
 
@@ -71,17 +69,8 @@ public class ItemsLoader {
             }
         });
 
-        //To test this part we need some response from server
         mFindForMeService.listItems(type, Sort.POPULAR, 1)
                 .map(new ResponseToFindItemList())
-                /*.flatMap(new Func1<List<FindItem>, Observable<FindItem>>() {
-                    @Override
-                    public Observable<FindItem> call(List<FindItem> items) {
-                        Log.i("TEST", " items received in flatMap size : "+ items.size());
-                        return Observable.from(items);
-                    }
-                })
-                .toList()*/
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(itemRequest);
@@ -90,5 +79,3 @@ public class ItemsLoader {
     }
 
 }
-
-//repository pattern to use : https://gist.github.com/pieces029/5e92f9003fa1a4ebc59b

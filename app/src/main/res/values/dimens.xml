@@ -17,4 +17,6 @@
 
     <dimen name="find_item_image_height">60dp</dimen>
 
+    <dimen name="navdrawer_width">260dp</dimen>
+
 </resources>

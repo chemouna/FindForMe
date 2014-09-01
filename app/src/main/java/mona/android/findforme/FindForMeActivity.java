@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.app.ActionBarDrawerToggle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -60,11 +61,6 @@ public class FindForMeActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //FindForMeApplication.get(this).inject(this);
-        setContentView(R.layout.find_for_me);
-
-        ButterKnife.inject(this);
-
         /*Switch enabledSwitch = new Switch(this);
         enabledSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -79,6 +75,11 @@ public class FindForMeActivity extends BaseActivity {
         ActionBar actionBar = getActionBar();
         actionBar.setCustomView(enabledSwitch);
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_TITLE | ActionBar.DISPLAY_SHOW_CUSTOM);*/
+    }
+
+    @Override
+    protected int getContentViewLayoutId() {
+        return R.layout.find_for_me;
     }
 
     @OnClick(R.id.fl_take_photo)
@@ -177,5 +178,9 @@ public class FindForMeActivity extends BaseActivity {
         Log.i("TEST", " onQueueSizeChanged called ");
     }
 
-
 }
+
+/**
+   TODO: add NavigationDrawer here
+
+ **/

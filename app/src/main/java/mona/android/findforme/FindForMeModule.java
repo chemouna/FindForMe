@@ -1,13 +1,17 @@
 package mona.android.findforme;
 
 import android.app.Application;
+import android.content.Context;
 
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
 import mona.android.findforme.data.DataModule;
+import mona.android.findforme.qualifiers.ApplicationContext;
 import mona.android.findforme.services.PhotoUploadTaskService;
+import mona.android.findforme.state.StateProvider;
+import mona.android.findforme.state.persistence.PersistenceProvider;
 import mona.android.findforme.tasks.PhotoUploadTask;
 import mona.android.findforme.tasks.PhotoUploadTaskQueue;
 import mona.android.findforme.ui.UiModule;
@@ -18,13 +22,16 @@ import mona.android.findforme.ui.grid.GridContainer;
  */
 @Module(
     includes = {
-        MainModule.class,
+        MainProvider.class,
         DataModule.class,
-        UiModule.class
+        UiModule.class,
+        StateProvider.class,
+        PersistenceProvider.class
     },
     injects = {
             FindForMeApplication.class,
             FindForMeActivity.class,
+            LoginActivity.class,
             PhotoUploadTaskQueue.class,
             PhotoUploadTaskService.class,
             PhotoUploadTask.class,
@@ -40,5 +47,10 @@ public class FindForMeModule {
 
     @Provides @Singleton
     Application provideApplication() { return app; }
+
+    @Provides @ApplicationContext
+    public Context provideApplicationContext(){
+        return app.getApplicationContext();
+    }
 
 }

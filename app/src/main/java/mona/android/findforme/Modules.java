@@ -1,10 +1,5 @@
 package mona.android.findforme;
 
-import mona.android.findforme.FindForMeApplication;
-import mona.android.findforme.MainModule;
-import mona.android.findforme.data.DataModule;
-import mona.android.findforme.ui.UiModule;
-
 /**
  * Created by cheikhna on 10/08/2014.
  */

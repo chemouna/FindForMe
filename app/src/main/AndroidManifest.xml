@@ -18,7 +18,7 @@
         android:name=".FindForMeApplication">
 
         <activity
-            android:name="mona.android.findforme.FindForMeActivity"
+            android:name="mona.android.findforme.LoginActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,7 +28,7 @@
         </activity>
 
         <activity
-            android:name="mona.android.findforme.LoginActivity">
+            android:name="mona.android.findforme.FindForMeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT" />

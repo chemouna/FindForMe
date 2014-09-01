@@ -9,4 +9,6 @@
 
     <color name="theme_accent_1_light">#b2dfff</color>
 
+    <color name="navdrawer_background">#ffffffff</color>
+
 </resources>
