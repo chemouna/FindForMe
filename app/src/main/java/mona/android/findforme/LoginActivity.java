@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.androidsocialnetworks.lib.SocialNetwork;
 import com.androidsocialnetworks.lib.SocialNetworkManager;
@@ -94,8 +95,10 @@ public class LoginActivity extends BaseActivity
 
     @OnClick(R.id.ib_login_facebook)
     void loginFacebook(){
-        mCurrentSocialNetwork = mSocialNetworkManager.getFacebookSocialNetwork();
-        mCurrentSocialNetwork.requestLogin(this);
+        /*mCurrentSocialNetwork = mSocialNetworkManager.getFacebookSocialNetwork();
+        mCurrentSocialNetwork.requestLogin(this);*/
+        //Temp
+        Toast.makeText(this, R.string.click_fb, Toast.LENGTH_LONG).show();
     }
 
     @Override

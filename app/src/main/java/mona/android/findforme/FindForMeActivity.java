@@ -156,7 +156,6 @@ public class FindForMeActivity extends BaseActivity {
                         return true;
                     }
                 });*/
-
         return true;
     }
 
@@ -179,8 +178,3 @@ public class FindForMeActivity extends BaseActivity {
     }
 
 }
-
-/**
-   TODO: add NavigationDrawer here
-
- **/

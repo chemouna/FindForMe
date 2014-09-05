@@ -6,20 +6,36 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:0.12.+'
         classpath 'com.jakewharton.hugo:hugo-plugin:1.1.0'
+        classpath 'org.robolectric:robolectric-gradle-plugin:0.12.+'
+        classpath 'com.stanfy.spoon:spoon-gradle-plugin:0.10.0'
     }
 }
 
 apply plugin: 'android'
 apply plugin: 'hugo'
+apply plugin: 'robolectric'
+apply plugin: 'spoon'
 
 //lpreview = hasProperty('lpreview')
 project.ext {
     lpropPreview = true
 }; //temporary
 
-
 android {
-    //compileSdkVersion 'android-L'
+    compileSdkVersion 19
+    buildToolsVersion '19.1.0'
+    defaultConfig {
+        minSdkVersion 14
+        targetSdkVersion 19
+
+        versionCode 1
+        versionName "0.1"
+
+        testApplicationId "mona.android.findforme.test"
+        testInstrumentationRunner "com.google.android.apps.common.testing.testrunner.GoogleInstrumentationTestRunner"
+    }
+
+    /*
     compileSdkVersion project.ext.lpropPreview ? 'android-L' : 19
     buildToolsVersion '19.1.0'
 
@@ -28,9 +44,22 @@ android {
     defaultConfig lpropPreview ? {
         minSdkVersion 14
         targetSdkVersion "L"
+
+        testApplicationId "mona.android.findforme.test"
+        testInstrumentationRunner "com.google.android.apps.common.testing.testrunner.GoogleInstrumentationTestRunner"
     } : {
         minSdkVersion 14
         targetSdkVersion 19
+
+        testApplicationId "mona.android.findforme.test"
+        testInstrumentationRunner "com.google.android.apps.common.testing.testrunner.GoogleInstrumentationTestRunner"
+    }
+    */
+
+    sourceSets {
+        androidTest {
+            setRoot('src/test')
+        }
     }
 
     buildTypes {
@@ -52,7 +81,16 @@ android {
 
     sourceSets {
         androidTest.setRoot('tests')
+        androidTest.java.srcDirs = ['tests/java']
     }
+
+    packagingOptions {
+        exclude 'LICENSE.txt'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE'
+    }
+
 }
 
 repositories {
@@ -61,37 +99,86 @@ repositories {
 }
 
 dependencies {
+    androidTestCompile('junit:junit:4.11');
     compile fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestCompile fileTree(dir: 'libs-test', include: ['*.jar'])
 
     compile 'com.android.support:support-v4:20.0.0'
     compile 'com.jakewharton:butterknife:5.1.2'
-
     compile 'com.squareup.dagger:dagger:1.2.2'
     provided 'com.squareup.dagger:dagger-compiler:1.2.2'
-
     compile 'com.google.guava:guava:18.0'
-
-
     compile 'com.google.code.gson:gson:2.2.4'
     compile 'com.squareup:otto:1.3.5'
     compile 'com.squareup:tape:1.2.2'
     compile 'com.squareup.retrofit:retrofit:1.6.+'
     compile 'com.jakewharton.scalpel:scalpel:1.1.2'
-
     compile 'com.jakewharton.timber:timber:2.4.+'
     compile 'com.etsy.android.grid:library:1.0.5'
     compile 'com.squareup.picasso:picasso:2.3.3'
-
     compile 'com.netflix.rxjava:rxjava-core:0.19.6'
     compile 'com.netflix.rxjava:rxjava-android:0.19.6'
-
     //TODO: may need to exclude some libraries like of play services ...
     compile('com.github.androidsocialnetworks:library:0.3.4@aar') {
         transitive = true
         exclude group: 'com.android.support', module: 'support-v4'
     }
-
     compile 'nl.qbusict:cupboard:2.0.1'
-
-
+    androidTestCompile('com.jakewharton.espresso:espresso:1.1-r3') {
+        exclude group: 'com.squareup.dagger'
+    }
+    androidTestCompile('org.robolectric:robolectric:2.3') {
+        exclude module: 'classworlds'
+        exclude module: 'commons-logging'
+        exclude module: 'httpclient'
+        exclude module: 'maven-artifact'
+        exclude module: 'maven-artifact-manager'
+        exclude module: 'maven-error-diagnostics'
+        exclude module: 'maven-model'
+        exclude module: 'maven-project'
+        exclude module: 'maven-settings'
+        exclude module: 'plexus-container-default'
+        exclude module: 'plexus-interpolation'
+        exclude module: 'plexus-utils'
+        exclude module: 'wagon-file'
+        exclude module: 'wagon-http-lightweight'
+        exclude module: 'wagon-provider-api'
+    }
+    androidTestCompile 'com.squareup.spoon:spoon-client:1.1.0'
 }
+
+robolectric {
+    include '**/robolectric/**/*Test.class'
+    include '**/robolectric/*Test.class'
+    include '**/*Test.class'
+    exclude '**/espresso/**/*.class'
+}
+
+spoon {
+    if (project.hasProperty('spoonClassName')) {
+        className = project.spoonClassName
+    }
+}
+
+/*task localTest(type: Test, dependsOn: assemble) {
+    testClassesDir = sourceSets.testLocal.output.classesDir
+
+    android.sourceSets.main.java.srcDirs.each { dir ->
+        def buildDir = dir.getAbsolutePath().split('/')
+        buildDir =  (buildDir[0..(buildDir.length - 4)] + ['build', 'classes', 'debug']).join('/')
+
+        sourceSets.testLocal.compileClasspath += files(buildDir)
+        sourceSets.testLocal.runtimeClasspath += files(buildDir)
+    }
+
+    classpath = sourceSets.testLocal.runtimeClasspath
+}*/
+
+apply plugin: 'idea'
+
+idea {
+    module {
+        testOutputDir = file('build/test-classes/debug')
+    }
+}
+

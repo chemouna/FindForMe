@@ -10,4 +10,6 @@
     <string name="open_drawer">Open navigation drawer</string>
     <string name="close_drawer">Close navigation drawer</string>
 
+    <string name="click_fb">Click facebook</string>
+
 </resources>
