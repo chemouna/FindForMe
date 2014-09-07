@@ -30,7 +30,7 @@ public class AsyncDatabaseHelperImpl implements AsyncDatabaseHelper {
                 })
                 //.observeOn(AndroidSchedulers.mainThread()) // may need this
                 .subscribeOn(Schedulers.newThread())
-                .first();
+                .first(); //not sure of this first ?
         /**lola
          may need to force subscription for immediate execution
          obs.subscribe();

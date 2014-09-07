@@ -5,7 +5,7 @@ import mona.android.findforme.model.UserProfile;
 /**
  * Created by cheikhna on 31/08/2014.
  */
-public interface UserState {
+public interface UserState extends BaseState {
 
     public void setUserProfile(UserProfile profile);
 

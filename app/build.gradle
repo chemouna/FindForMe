@@ -11,7 +11,7 @@ buildscript {
     }
 }
 
-apply plugin: 'android'
+apply plugin: 'com.android.application'
 apply plugin: 'hugo'
 apply plugin: 'robolectric'
 apply plugin: 'spoon'
@@ -91,6 +91,10 @@ android {
         exclude 'META-INF/NOTICE'
     }
 
+    lintOptions {
+        abortOnError false
+    }
+
 }
 
 repositories {
@@ -99,11 +103,13 @@ repositories {
 }
 
 dependencies {
-    androidTestCompile('junit:junit:4.11');
+    androidTestCompile('junit:junit:4.11'){
+        exclude module: 'hamcrest-core'
+    };
     compile fileTree(dir: 'libs', include: ['*.jar'])
     androidTestCompile fileTree(dir: 'libs-test', include: ['*.jar'])
 
-    compile 'com.android.support:support-v4:20.0.0'
+    compile 'com.android.support:support-v4:20.+'
     compile 'com.jakewharton:butterknife:5.1.2'
     compile 'com.squareup.dagger:dagger:1.2.2'
     provided 'com.squareup.dagger:dagger-compiler:1.2.2'
@@ -145,6 +151,9 @@ dependencies {
         exclude module: 'wagon-provider-api'
     }
     androidTestCompile 'com.squareup.spoon:spoon-client:1.1.0'
+    //androidTestCompile 'com.squareup.assertj:assertj-android:1.0.0'
+    androidTestCompile 'com.jayway.android.robotium:robotium-solo:5.2.1'
+
 }
 
 robolectric {
@@ -162,15 +171,12 @@ spoon {
 
 /*task localTest(type: Test, dependsOn: assemble) {
     testClassesDir = sourceSets.testLocal.output.classesDir
-
     android.sourceSets.main.java.srcDirs.each { dir ->
         def buildDir = dir.getAbsolutePath().split('/')
         buildDir =  (buildDir[0..(buildDir.length - 4)] + ['build', 'classes', 'debug']).join('/')
-
         sourceSets.testLocal.compileClasspath += files(buildDir)
         sourceSets.testLocal.runtimeClasspath += files(buildDir)
     }
-
     classpath = sourceSets.testLocal.runtimeClasspath
 }*/
 

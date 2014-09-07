@@ -2,19 +2,17 @@ package mona.android.findforme;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.google.gdata.util.common.base.Preconditions;
-
 import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import mona.android.findforme.helpers.UserManager;
 import mona.android.findforme.ui.AbDrawerToggleWrapper;
 import mona.android.findforme.util.LPreviewSupportBase;
 
@@ -35,6 +33,10 @@ public abstract class BaseActivity extends FragmentActivity {
 
     @Inject
     AbDrawerToggleWrapper.AbDrawerToggleWrapperFactory drawerToggleWrapperFactory;
+
+    //TODO: may need to abstract this userManager in a MainManager with other needed stuff
+    @Inject
+    UserManager mUserManager;
 
     private AbDrawerToggleWrapper mDrawerToggleWrapper;
 
@@ -120,6 +122,18 @@ public abstract class BaseActivity extends FragmentActivity {
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         mDrawerToggleWrapper.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    protected void onResume() {
+        mUserManager.start();
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        mUserManager.stop();
+        super.onPause();
     }
 
 }

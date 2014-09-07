@@ -43,8 +43,8 @@ public class LeftDrawerFragment extends Fragment {
         }
     }
 
-    private void displayUserProfile(UserProfile profile){
-        if(profile == null){
+    private void displayUserProfile(UserProfile profile) {
+        if(profile == null) {
             return;
         }
         tvUsername.setText(profile.getUsername());
@@ -55,8 +55,7 @@ public class LeftDrawerFragment extends Fragment {
 
     @Subscribe
     public void onUserProfileChanged(UserState.UserProfileChangedEvent event) {
-          displayUserProfile(mState.getUserProfile());
+         displayUserProfile(mState.getUserProfile());
     }
-
 
 }

@@ -18,6 +18,7 @@ import com.androidsocialnetworks.lib.impl.TwitterSocialNetwork;
 import com.androidsocialnetworks.lib.listener.OnLoginCompleteListener;
 import com.androidsocialnetworks.lib.listener.OnRequestSocialPersonCompleteListener;
 import com.google.common.base.Preconditions;
+import com.squareup.otto.Bus;
 
 import javax.inject.Inject;
 
@@ -53,7 +54,11 @@ public class LoginActivity extends BaseActivity
     @Inject
     AsyncDatabaseHelper mAsyncDbHelper;
 
-    private ApplicationState mState;
+    @Inject
+    Bus mBus;
+
+    @Inject
+    ApplicationState mState;
 
     private SocialNetwork mCurrentSocialNetwork;
 
@@ -62,6 +67,10 @@ public class LoginActivity extends BaseActivity
         super.onCreate(savedInstanceState);
 
         mState = FindForMeApplication.get(this).getApplicationState();
+
+        if(mState.getUserProfile() != null) {
+            startActivity(new Intent(this, FindForMeActivity.class));
+        }
 
         getSupportFragmentManager().beginTransaction().add(
                 mSocialNetworkManager, SOCIAL_NETWORK_TAG).commit();
@@ -95,10 +104,9 @@ public class LoginActivity extends BaseActivity
 
     @OnClick(R.id.ib_login_facebook)
     void loginFacebook(){
-        /*mCurrentSocialNetwork = mSocialNetworkManager.getFacebookSocialNetwork();
-        mCurrentSocialNetwork.requestLogin(this);*/
-        //Temp
-        Toast.makeText(this, R.string.click_fb, Toast.LENGTH_LONG).show();
+        mCurrentSocialNetwork = mSocialNetworkManager.getFacebookSocialNetwork();
+        mCurrentSocialNetwork.requestLogin(this);
+        //Toast.makeText(this, R.string.click_fb, Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -130,7 +138,6 @@ public class LoginActivity extends BaseActivity
         UserProfile profile = new UserProfile(socialNetworkID, socialPerson);
         mState.setUserProfile(profile);
         mAsyncDbHelper.put(profile);
-
         startActivity(new Intent(this, FindForMeActivity.class));
     }
 

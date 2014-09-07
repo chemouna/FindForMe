@@ -21,6 +21,7 @@ public class UserProfile {
                String profileURL, String username, long socialNetworkId){
         this.id = id;
         this.name = name;
+
         this.avatarURL = avatarURL;
         this.profileURL = profileURL;
         this.username = username;
