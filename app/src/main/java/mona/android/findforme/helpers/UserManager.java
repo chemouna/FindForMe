@@ -41,8 +41,8 @@ public class UserManager { //not sure if this is the correct name -> TODO: refac
         final UserProfile userProfile = mUserState.getUserProfile();
         if(userProfile == null) {
             //from where to get username ?
-            Observable<UserProfile> userProfileObservable = mDbHelper.getUserProfile(""); //how would i deal with this is observable ?
-            Subscription userProfileSubscription = userProfileObservable.subscribe(new Action1<UserProfile>() {
+            Observable<UserProfile> userProfileObservable = mDbHelper.getUserProfile("monawheretwit"); //en dure temp
+            userProfileObservable.subscribe(new Action1<UserProfile>() {
                 @Override
                 public void call(UserProfile profile) {
                     mUserState.setUserProfile(profile);

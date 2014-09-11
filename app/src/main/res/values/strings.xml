@@ -12,4 +12,10 @@
 
     <string name="click_fb">Click facebook</string>
 
+    <string name="login_googleplus">Login with Google+</string>
+    <string name="login_twitter">Login with Twitter</string>
+    <string name="login_facebook">Login with Facebook</string>
+
+    <string name="login_internal_error">An internal error occured</string>
+
 </resources>

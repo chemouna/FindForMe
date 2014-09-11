@@ -21,19 +21,19 @@
                 android:id="@+id/ib_login_google_plus"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/login_button_height"
-                android:text="Login with Google+" />
+                android:text="@string/login_googleplus" />
 
             <Button
                 android:id="@+id/ib_login_twitter"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/login_button_height"
-                android:text="Login with Twitter" />
+                android:text="@string/login_twitter" />
 
             <Button
                 android:id="@+id/ib_login_facebook"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/login_button_height"
-                android:text="Login with Facebook" />
+                android:text="@string/login_facebook" />
 
     </LinearLayout>
 
