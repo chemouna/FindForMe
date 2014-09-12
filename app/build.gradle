@@ -60,7 +60,7 @@ android {
 
     sourceSets {
         androidTest {
-            setRoot('src/test')
+            setRoot('src/androidTest')
         }
     }
 
