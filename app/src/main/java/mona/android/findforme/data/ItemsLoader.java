@@ -35,13 +35,13 @@ public class ItemsLoader {
     private final Map<Type, List<FindItem>> mItemsCache = new LinkedHashMap<Type, List<FindItem>>();
     private final Map<Type, PublishSubject<List<FindItem>>> mItemsRequests = new LinkedHashMap<Type, PublishSubject<List<FindItem>>>();
 
-    @Inject
+    //@Inject
     public ItemsLoader(FindForMeService service){
         mFindForMeService = service;
     }
 
     @DebugLog
-    public Subscription loadItems(final Type type, Observer<List<FindItem>> observer){
+    public Subscription loadItems(final Type type, final Sort sort, Observer<List<FindItem>> observer){
         List<FindItem> items = mItemsCache.get(type);
         if(items != null){
             observer.onNext(items); //emit what's cached
@@ -69,7 +69,7 @@ public class ItemsLoader {
             }
         });
 
-        mFindForMeService.listItems(type, Sort.POPULAR, 1)
+        mFindForMeService.listItems(type, sort, 1)
                 .map(new ResponseToFindItemList())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

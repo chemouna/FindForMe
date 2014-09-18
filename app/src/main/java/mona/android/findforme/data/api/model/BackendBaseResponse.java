@@ -12,4 +12,11 @@ public abstract class BackendBaseResponse {
         this.success = success;
     }
 
+    public int getStatus() {
+        return status;
+    }
+
+    public boolean isSuccess() {
+        return success;
+    }
 }

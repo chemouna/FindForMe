@@ -25,7 +25,7 @@ public final class ApplicationState implements UserState {
         Preconditions.checkNotNull(profile, " Profile cannot be null");
         if (!Objects.equal(profile, mUserProfile)) {
             this.mUserProfile = profile;
-            mBus.post(new UserProfileChangedEvent());
+            mBus.post(new UserProfileChangedEvent(profile));
         }
     }
 

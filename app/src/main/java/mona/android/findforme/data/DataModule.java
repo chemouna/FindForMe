@@ -13,6 +13,7 @@ import com.squareup.picasso.Picasso;
 import java.io.File;
 import java.io.IOException;
 
+import javax.inject.Named;
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -78,8 +79,14 @@ public final class DataModule {
     }
 
     @Provides @Singleton
+    //@Named("realService")
     FindForMeService provideFindForMeService(RestAdapter restAdapter){
         return restAdapter.create(FindForMeService.class);
+    }
+
+    @Provides @Singleton
+    ItemsLoader provideItemsLoader(FindForMeService service){
+        return new ItemsLoader(service);
     }
 
     @Provides @Singleton

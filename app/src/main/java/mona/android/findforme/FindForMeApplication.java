@@ -16,7 +16,7 @@ import timber.log.Timber;
  */
 public class FindForMeApplication extends Application {
 
-    private ObjectGraph mObjectGraph;
+    protected ObjectGraph mObjectGraph;
 
     @Inject
     ApplicationState mApplicationState;

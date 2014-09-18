@@ -11,8 +11,7 @@ public interface UserState extends BaseState {
 
     public UserProfile getUserProfile();
 
-    public static class UserProfileChangedEvent {
-
-    }
+    /*public static class UserProfileChangedEvent {
+    }*/
 
 }

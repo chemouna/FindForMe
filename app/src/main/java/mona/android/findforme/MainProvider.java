@@ -1,32 +1,19 @@
 package mona.android.findforme;
 
-import android.app.Application;
 import android.content.Context;
 
-import com.androidsocialnetworks.lib.SocialNetworkManager;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.squareup.okhttp.Cache;
-import com.squareup.okhttp.OkHttpClient;
 import com.squareup.otto.Bus;
-
-import java.io.File;
-import java.io.IOException;
 
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import mona.android.findforme.FindForMeActivity;
-import mona.android.findforme.FindForMeApplication;
-import mona.android.findforme.LoginActivity;
 import mona.android.findforme.qualifiers.ApplicationContext;
-import mona.android.findforme.services.PhotoUploadTaskService;
-import mona.android.findforme.tasks.PhotoUploadTask;
+import mona.android.findforme.socialnetwork.SocialNetworkFragment;
+import mona.android.findforme.socialnetwork.SocialNetworksContract;
 import mona.android.findforme.tasks.PhotoUploadTaskQueue;
-import mona.android.findforme.tasks.PhotoUploadTaskSerializer;
-import mona.android.findforme.util.AppUtils;
-import timber.log.Timber;
 
 /**
  * Created by cheikhna on 11/08/2014.
@@ -58,7 +45,7 @@ public final class MainProvider {
                     create();
     }
 
-    @Provides
+    /*@Provides
     @Singleton
     SocialNetworkManager provideSocialNetworkManager(@ApplicationContext Context context) {
         return SocialNetworkManager.Builder.from(context)
@@ -66,6 +53,12 @@ public final class MainProvider {
                 .facebook()
                 .googlePlus()
                 .build();
+    }*/
+
+    @Provides
+    @Singleton
+    SocialNetworksContract provideSocialNetworksContract() {
+        return new SocialNetworkFragment();
     }
 
     //TODO: provide something like providePrivateFileDirectory to use with taking a phoro where we

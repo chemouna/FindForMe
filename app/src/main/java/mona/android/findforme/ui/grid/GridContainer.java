@@ -20,6 +20,7 @@ import mona.android.findforme.R;
 import mona.android.findforme.data.ItemsLoader;
 import mona.android.findforme.data.api.Type;
 import mona.android.findforme.data.api.model.FindItem;
+import mona.android.findforme.data.api.model.Sort;
 import mona.android.findforme.data.rx.EndlessObserver;
 import rx.Subscription;
 
@@ -63,7 +64,7 @@ public class GridContainer extends ViewAnimator {
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
         //TODO: fetch from server our images & use picasso to display them
-        mSubscription = mItemsLoader.loadItems(mType, new EndlessObserver<List<FindItem>>() {
+        mSubscription = mItemsLoader.loadItems(mType, Sort.POPULAR, new EndlessObserver<List<FindItem>>() {
             @Override
             public void onNext(List<FindItem> findItems) {
                 Log.i("TEST", " onNext called with items size : " + findItems.size());

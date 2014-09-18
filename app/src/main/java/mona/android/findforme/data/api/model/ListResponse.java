@@ -18,4 +18,7 @@ public class ListResponse extends BackendBaseResponse {
         Log.i("TEST", " ListResponse - status : " + status + " items size : " + items.size());
     }
 
+    public List<FindItem> getData() {
+        return data;
+    }
 }

@@ -16,6 +16,7 @@ import butterknife.InjectView;
 import mona.android.findforme.R;
 import mona.android.findforme.model.UserProfile;
 import mona.android.findforme.state.ApplicationState;
+import mona.android.findforme.state.UserProfileChangedEvent;
 import mona.android.findforme.state.UserState;
 
 /**
@@ -54,8 +55,8 @@ public class LeftDrawerFragment extends Fragment {
     //f.Ex @Subscribe method here for that event
 
     @Subscribe
-    public void onUserProfileChanged(UserState.UserProfileChangedEvent event) {
-         displayUserProfile(mState.getUserProfile());
+    public void onUserProfileChanged(UserProfileChangedEvent event) {
+         displayUserProfile(event.getUserProfile());
     }
 
 }

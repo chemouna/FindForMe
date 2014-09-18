@@ -29,12 +29,9 @@ public class UserManager { //not sure if this is the correct name -> TODO: refac
     }
 
     public final void start(){
-        //TODO: check if no user profile is set -> get it
-
         onStart();
     }
 
-    //TODO: some way of firing this or notifiying this  that it shld start
     protected void onStart(){
         mUserState.registerForEvents(this);
 
@@ -42,7 +39,7 @@ public class UserManager { //not sure if this is the correct name -> TODO: refac
         if(userProfile == null) {
             //from where to get username ?
             Observable<UserProfile> userProfileObservable = mDbHelper.getUserProfile("monawheretwit"); //en dure temp
-            userProfileObservable.subscribe(new Action1<UserProfile>() {
+            userProfileObservable.doOnNext(new Action1<UserProfile>() {
                 @Override
                 public void call(UserProfile profile) {
                     mUserState.setUserProfile(profile);
