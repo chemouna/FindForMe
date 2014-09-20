@@ -1,6 +1,7 @@
 package mona.android.findforme;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -57,8 +58,8 @@ public final class MainProvider {
 
     @Provides
     @Singleton
-    SocialNetworksContract provideSocialNetworksContract() {
-        return new SocialNetworkFragment();
+    SocialNetworksContract provideSocialNetworksContract(@NonNull @ApplicationContext Context context) {
+        return SocialNetworkFragment.build(context);
     }
 
     //TODO: provide something like providePrivateFileDirectory to use with taking a phoro where we

@@ -1,5 +1,8 @@
 package mona.android.findforme.socialnetwork;
 
+import android.content.Context;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
 import com.androidsocialnetworks.lib.SocialNetwork;
@@ -11,7 +14,9 @@ import com.squareup.otto.Bus;
 
 import javax.inject.Inject;
 
+import mona.android.findforme.FindForMeApplication;
 import mona.android.findforme.model.UserProfile;
+import mona.android.findforme.qualifiers.ApplicationContext;
 import mona.android.findforme.state.UserProfileChangedEvent;
 import mona.android.findforme.util.AppUtils;
 import timber.log.Timber;
@@ -28,12 +33,22 @@ public class SocialNetworkFragment extends SocialNetworkManager
     @Inject
     Bus mBus;
 
-    public SocialNetworkFragment(){
-         SocialNetworkManager.Builder.from(getActivity().getApplicationContext())
-                .twitter(AppUtils.TWITTER_APP_ID, AppUtils.TWITTER_API_SECRET)
-                .facebook()
-                .googlePlus()
-                .build();
+    public static SocialNetworkFragment build(Context context) {
+        SocialNetworkManager socialNetworkManager =
+                Builder.from(context)
+               .twitter(AppUtils.TWITTER_APP_ID, AppUtils.TWITTER_API_SECRET)
+               .facebook()
+               .googlePlus()
+               .build();
+
+        SocialNetworkFragment socialNetworkFragment = new SocialNetworkFragment();
+        socialNetworkFragment.setArguments(socialNetworkManager.getArguments());
+        return socialNetworkFragment;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
     }
 
     @Override

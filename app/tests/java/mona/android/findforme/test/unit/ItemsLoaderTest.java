@@ -2,14 +2,13 @@ package mona.android.findforme.test.unit;
 
 import android.test.AndroidTestCase;
 
-import com.squareup.okhttp.OkHttpClient;
-
 import org.mockito.MockitoAnnotations;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -25,23 +24,31 @@ import mona.android.findforme.data.api.Type;
 import mona.android.findforme.data.api.model.FindItem;
 import mona.android.findforme.data.api.model.Sort;
 import mona.android.findforme.test.Injector;
-import mona.android.findforme.test.mock.MockFindForMeService;
+import mona.android.findforme.test.unit.mock.MockFindForMeService;
 import retrofit.Endpoint;
 import retrofit.MockRestAdapter;
 import retrofit.RestAdapter;
 import retrofit.client.Client;
+import rx.Observer;
 import rx.Subscription;
 import rx.observers.TestObserver;
+
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 /**
  * Created by cheikhna on 14/09/2014.
  */
 public class ItemsLoaderTest extends AndroidTestCase {
 
-    @Inject
+    /*@Inject */
     ItemsLoader itemsLoader;
 
-    //MockFindForMeService mockFindForMeService;
+    @Inject
+    FindForMeService mockFindForMeService;
     //this is injected in loader tests -> how to specify it as the one being injected here
 
     /*@Captor
@@ -59,7 +66,7 @@ public class ItemsLoaderTest extends AndroidTestCase {
         Injector.inject(this);
 
         MockitoAnnotations.initMocks(this);
-        //itemsLoader = new ItemsLoader(mockFindForMeService); //or maybe use a dagger test module
+        itemsLoader = new ItemsLoader(mockFindForMeService); //or maybe use a dagger test module
     }
 
     private void ensureDexmakerCacheDir() {
@@ -67,32 +74,37 @@ public class ItemsLoaderTest extends AndroidTestCase {
         System.setProperty("dexmaker.dexcache", cacheDir.toString());
     }
 
-    public void testThatAllItemsAreLoaded() {
-        /*Observable<ListResponse> observable = mockFindForMeService.listItems(Type.CLOTHING, Sort.POPULAR, 1);
-        ListResponse response = observable.toBlocking().single();*/
+    /*public void testThatAllItemsAreLoaded() {
+        //Observer<List<FindItem>> mockObserver =  mock(Observer.class);
+        //TestObserver<List<FindItem>> observer = new TestObserver<List<FindItem>>(mockObserver);
+        final AtomicReference<List<FindItem>> testResult = new AtomicReference<List<FindItem>>();
+        Subscription subscription = itemsLoader.loadItems(Type.CLOTHING, Sort.POPULAR,
+                new Observer<List<FindItem>>() {
+                    @Override
+                    public void onCompleted() {
 
-        //EndlessObserver observer = mock(EndlessObserver.class);
+                    }
 
-        TestObserver<List<FindItem>> observer = new TestObserver<List<FindItem>>();
-        Subscription subscription = itemsLoader.loadItems(Type.CLOTHING, Sort.POPULAR, observer);
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(List<FindItem> findItems) {
+                        testResult.set(findItems);
+                    }
+            });
         assertNotNull(subscription);
-
-        //List<List<FindItem>> mockedItems = new ArrayList<List<FindItem>>();
-        //mockedItems.add(mockFindForMeService.getItems(Type.CLOTHING, Sort.POPULAR));
-        //observer.assertReceivedOnNext(itemsLoader.);
-
-        //assertEquals(observerCaptor.getValue().onNext();)
-
-        /*assertTrue(response.isSuccess());
-        assertEquals(response.getStatus(), 200);
-        assertEquals(response.getData().size(), mockFindForMeService.getSavedItems().size());*/
-    }
+        verify(mockFindForMeService, times(1)).listItems(Type.CLOTHING, Sort.POPULAR, 1);
+        assertNotNull(testResult.get());
+    }*/
 
     @Module(
             injects = {ItemsLoaderTest.class},
             includes = { DataModule.class },
             overrides = true,
-            //library = true,
+            library = true,
             complete = false
     )
     static public final class TestModule {
@@ -118,7 +130,7 @@ public class ItemsLoaderTest extends AndroidTestCase {
         FindForMeService provideFindForMeService(RestAdapter restAdapter){
             //return restAdapter.create(MockFindForMeService.class);
             MockRestAdapter mockRestAdapter = MockRestAdapter.from(restAdapter);
-            MockFindForMeService mockService = new MockFindForMeService();
+            FindForMeService mockService = new MockFindForMeService();
             FindForMeService service = mockRestAdapter.create(FindForMeService.class, mockService);
             return service;
         }

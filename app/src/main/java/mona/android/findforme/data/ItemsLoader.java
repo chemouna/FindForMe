@@ -42,6 +42,7 @@ public class ItemsLoader {
 
     @DebugLog
     public Subscription loadItems(final Type type, final Sort sort, Observer<List<FindItem>> observer){
+        Log.i("TEST", " ItemsLoader's loadItems loadItems is called ");
         List<FindItem> items = mItemsCache.get(type);
         if(items != null){
             observer.onNext(items); //emit what's cached
@@ -71,11 +72,12 @@ public class ItemsLoader {
 
         mFindForMeService.listItems(type, sort, 1)
                 .map(new ResponseToFindItemList())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.immediate()) //temp deleting .io
+                //.observeOn(AndroidSchedulers.mainThread())
                 .subscribe(itemRequest);
 
         return subscription;
     }
+
 
 }

@@ -23,7 +23,8 @@ import mona.android.findforme.ui.widget.GridItemView;
 /**
  * Created by cheikhna on 16/08/2014.
  */
-public class GridAdapter extends BindableAdapter<FindItem> {
+public class
+        GridAdapter extends BindableAdapter<FindItem> {
     private List<FindItem> items = Collections.emptyList();
 
     private final Picasso picasso;
