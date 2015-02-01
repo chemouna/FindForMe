@@ -39,7 +39,7 @@ import timber.log.Timber;
 )
 public final class DataModule {
 
-    private static final String FIND_FOR_ME_BACKEND = "http://findforme-backend.herokuapp.com";
+    private static final String FIND_FOR_ME_BACKEND = "your-backend-url-here";
     static final int DISK_CACHE_SIZE = 50 * 1024 * 1024; // 50MB
 
     @Provides @Singleton
