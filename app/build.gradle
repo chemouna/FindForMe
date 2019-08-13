@@ -117,7 +117,7 @@ dependencies {
     androidTestCompile fileTree(dir: 'libs-test', include: ['*.jar'])
     compile 'com.android.support:support-v4:20.+'
     compile 'com.jakewharton:butterknife:5.1.2'
-    compile 'com.squareup.dagger:dagger:1.2.2'
+    compile 'com.squareup.dagger:dagger:1.2.5'
     provided 'com.squareup.dagger:dagger-compiler:1.2.2'
     compile 'com.google.guava:guava:18.0'
     compile 'com.google.code.gson:gson:2.2.4'
