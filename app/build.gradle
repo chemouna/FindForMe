@@ -131,7 +131,7 @@ dependencies {
     compile 'com.netflix.rxjava:rxjava-core:0.19.6'
     compile 'com.netflix.rxjava:rxjava-android:0.19.6'
     //TODO: may need to exclude some libraries like of play services ...
-    compile('com.github.androidsocialnetworks:library:0.3.4@aar') {
+    compile('com.github.androidsocialnetworks:library:0.3.7@aar') {
         transitive = true
         exclude group: 'com.android.support', module: 'support-v4'
     }
