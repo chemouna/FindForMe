@@ -136,7 +136,7 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-v4'
     }
     compile 'nl.qbusict:cupboard:2.0.1'
-    compile 'com.squareup.retrofit:retrofit-mock:1.6.1'
+    compile 'com.squareup.retrofit:retrofit-mock:1.9.0'
 
     androidTestCompile('com.jakewharton.espresso:espresso:1.1-r3') {
         exclude group: 'com.squareup.dagger'
