@@ -127,7 +127,7 @@ dependencies {
     compile 'com.jakewharton.scalpel:scalpel:1.1.2'
     compile 'com.jakewharton.timber:timber:2.4.+'
     compile 'com.etsy.android.grid:library:1.0.5'
-    compile 'com.squareup.picasso:picasso:2.3.3'
+    compile 'com.squareup.picasso:picasso:2.71828'
     compile 'com.netflix.rxjava:rxjava-core:0.19.6'
     compile 'com.netflix.rxjava:rxjava-android:0.19.6'
     //TODO: may need to exclude some libraries like of play services ...
