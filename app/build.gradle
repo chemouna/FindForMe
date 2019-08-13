@@ -174,7 +174,7 @@ dependencies {
     }
     androidTestCompile('com.squareup.assertj:assertj-android:1.0.0')
     androidTestCompile 'com.google.dexmaker:dexmaker:1.1'
-    androidTestCompile 'com.google.dexmaker:dexmaker-mockito:1.1'
+    androidTestCompile 'com.google.dexmaker:dexmaker-mockito:1.2'
 }
 
 //tasks.findByName("assembleDebug").dependsOn("testDebugClasses")
